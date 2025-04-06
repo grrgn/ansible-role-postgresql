@@ -1,0 +1,19 @@
+---
+- name: Добавление репозитория apt
+  ansible.builtin.deb822_repository:
+    name: postgresql
+    types: deb
+    uris: "{{ postgresql_apt_url }}"
+    suites: "{{ ansible_distribution_release }}-pgdg"
+    components: "{{ postgresql_version_type }}"
+    signed_by: "{{ postgresql_gpgkey }}"
+
+- name: Установка PostgreSQL
+  ansible.builtin.apt:
+    name:
+      - "postgresql-{{postgresql_version}}"
+      - "postgresql-client-{{postgresql_version}}"
+      - "postgresql-contrib-{{postgresql_version}}"
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600

@@ -1,0 +1,19 @@
+---
+- name: Добавление репозитория yum
+  yum_repository:
+    name: postgresql
+    state: present
+    description: postgresql yum repo
+    baseurl: "{{ postgresql_yum_repository_url }}"
+    gpgkey: "{{ postgresql_yum_repository_gpgkey }}"
+    enabled: yes
+
+- name: Установка PostgreSQL
+  yum:
+    name:
+      - "postgresql{{ postgresql_version }}-server"
+      - "postgresql{{ postgresql_version }}"
+      - "postgresql{{ postgresql_version }}-contrib"
+    state: present
+    update_cache: yes
+
