@@ -4,3 +4,9 @@
 
 - include_tasks: install_alma.yml
   when: ansible_distribution == 'AlmaLinux'
+
+- include_tasks: configure_vars.yml
+
+- include_tasks: initialize.yml
+
+- include_tasks: user_acces.yml

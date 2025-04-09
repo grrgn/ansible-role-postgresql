@@ -6,3 +6,7 @@ postgresql_gpgkey: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
 
 postgresql_yum_repository_url: "https://yum.postgresql.org/{{ postgresql_version }}/{{ ansible_os_family | lower }}/rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}"
 postgresql_yum_repository_gpgkey: "https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL"
+
+user_name: student
+student_name: password
+server_ip: 192.168.1.102

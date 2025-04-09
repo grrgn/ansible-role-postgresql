@@ -1,5 +1,5 @@
 ---
-- name: Добавление репозитория yum
+- name: Add yum repository
   yum_repository:
     name: postgresql
     state: present
@@ -8,7 +8,7 @@
     gpgkey: "{{ postgresql_yum_repository_gpgkey }}"
     enabled: yes
 
-- name: Установка PostgreSQL
+- name: Install PostgreSQL
   yum:
     name:
       - "postgresql{{ postgresql_version }}-server"

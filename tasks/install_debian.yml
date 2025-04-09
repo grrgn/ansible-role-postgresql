@@ -1,5 +1,5 @@
 ---
-- name: Добавление репозитория apt
+- name: Add apt repository
   ansible.builtin.deb822_repository:
     name: postgresql
     types: deb
@@ -8,7 +8,7 @@
     components: "{{ postgresql_version_type }}"
     signed_by: "{{ postgresql_gpgkey }}"
 
-- name: Установка PostgreSQL
+- name: Install PostgreSQL
   ansible.builtin.apt:
     name:
       - "postgresql-{{postgresql_version}}"
