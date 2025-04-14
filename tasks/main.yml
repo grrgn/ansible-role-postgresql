@@ -1,12 +1,10 @@
 ---
-- include_tasks: install_debian.yml
+- ansible.builtin.include_tasks: install_debian.yml
   when: ansible_distribution == 'Debian'
 
-- include_tasks: install_alma.yml
+- ansible.builtin.include_tasks: install_alma.yml
   when: ansible_distribution == 'AlmaLinux'
 
-- include_tasks: configure_vars.yml
+- ansible.builtin.include_tasks: initialize.yml
 
-- include_tasks: initialize.yml
-
-- include_tasks: user_acces.yml
+- ansible.builtin.include_tasks: user_acces.yml
