@@ -2,3 +2,7 @@ postgresql_version: 17
 postgresql_apt_url: "https://apt.postgresql.org/pub/repos/apt"
 postgresql_version_type: "main"
 postgresql_gpgkey: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+
+postgresql_conf_files: "/etc/postgresql/{{ __postgresql_version }}/main"
+postgresql_data_dir: "/var/lib/postgresql/{{ __postgresql_version }}/main"
+postgresql_bin_location: "/usr/lib/postgresql/{{ __postgresql_version }}/bin"
