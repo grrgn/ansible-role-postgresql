@@ -1,5 +1,6 @@
 ---
 postgresql_version: 17
+
 postgresql_apt_url: "https://apt.postgresql.org/pub/repos/apt"
 postgresql_version_type: "main"
 postgresql_gpgkey: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
@@ -7,6 +8,10 @@ postgresql_gpgkey: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
 postgresql_yum_repository_url: "https://yum.postgresql.org/{{ postgresql_version }}/{{ ansible_os_family | lower }}/rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}"
 postgresql_yum_repository_gpgkey: "https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL"
 
-user_name: student
-student_name: password
-server_ip: 192.168.1.102
+postgresql_user: postgres
+postgresql_group: postgres
+postgresql_db_user: student
+postgresql_user_password: password
+postgresql_connection_ip: 192.168.1.102
+postgresql_database:
+postgresql_port:
