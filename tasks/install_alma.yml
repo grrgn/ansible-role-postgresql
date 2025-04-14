@@ -1,6 +1,9 @@
 ---
+- name: Include vars
+  ansible.builtin.include_vars: "{{ ansible_distribution }}"
+
 - name: Add yum repository
-  yum_repository:
+  ansible.builtin.yum_repository:
     name: postgresql
     state: present
     description: postgresql yum repo
@@ -9,7 +12,7 @@
     enabled: yes
 
 - name: Install PostgreSQL
-  yum:
+  ansible.builtin.yum:
     name:
       - "postgresql{{ postgresql_version }}-server"
       - "postgresql{{ postgresql_version }}"

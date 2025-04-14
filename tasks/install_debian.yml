@@ -1,4 +1,7 @@
 ---
+- name: Include vars
+  ansible.builtin.include_vars: "{{ ansible_distribution }}"
+
 - name: Add apt repository
   ansible.builtin.deb822_repository:
     name: postgresql
