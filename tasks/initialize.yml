@@ -1,18 +1,33 @@
 ---
+- name: Ensure PostgreSQL data directory exists.
+  ansible.builtin.file:
+    path: "{{ postgresql_data_dir }}"
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
+    state: directory
+    mode: 0700
+
+- name: "Init postgresql database cluster"
+  ansible.builtin.command:
+    cmd: "{{ postgresql_bin_location }}/initdb -D {{ postgresql_data_dir }}"
+  become: yes
+  become_user: "{{ postgresql_user }}"
+  register: postgresql_cluster
+
 - name: "Copy postgresql.conf"
   ansible.builtin.template:
     src: "postgresql.conf.j2"
-    dest: "{{ conf_files_location }}/postgresql.conf"
-    owner: postgres
-    group: postgres
+    dest: "{{ postgresql_conf_files }}/postgresql.conf"
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
   notify: "Restart PostgreSQL"
 
 - name: "Copy pg_hba.conf"
   ansible.builtin.template:
     src: "pg_hba.conf.j2"
-    dest: "{{ conf_files_location }}/pg_hba.conf"
-    owner: postgres
-    group: postgres
+    dest: "{{ postgresql_conf_files }}/pg_hba.conf"
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
   notify: "Restart PostgreSQL"
 
 - name: "Ensure PostgreSQL is running"
