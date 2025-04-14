@@ -1,14 +1,24 @@
 ---
 - name: Create PostgreSQL user
   community.postgresql.postgresql_user:
-    name: "{{ user_name }}"
+    name: "{{ postgresql_user }}"
     password: "{{ student_password }}"
     role_attr_flags: LOGIN
+    state: present
+
+- name: Grant user access to some db
+  community.postgresql.postgresql_pg_hba:
+    dest: "{{ postgresql_conf_files }}/pg_hba.conf"
+    contype: host
+    users: "{{ postgresql_user }}"
+    databases: "{{ postgresql_database }}"
+    method: md5
+    source: "{{ postgresql_connection_ip }}"
     state: present
 
 - name: Add server to connect
   ansible.builtin.lineinfile:
     path: "{{ conf_files_location }}/pg_hba.conf"
-    line: "host all {{ user_name }} {{ server_ip }}/32 md5"
+    line: "host all {{ postgresql_user }} {{ server_ip }}/32 md5"
     state: present
   notify: "Reload PostgreSQL"
