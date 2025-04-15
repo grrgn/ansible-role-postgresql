@@ -1,6 +1,6 @@
 ---
 - name: Include vars
-  ansible.builtin.include_vars: "{{ ansible_distribution }}"
+  ansible.builtin.include_vars: "{{ ansible_distribution }}.yml"
 
 - name: Add apt repository
   ansible.builtin.deb822_repository:
@@ -11,12 +11,13 @@
     components: "{{ postgresql_version_type }}"
     signed_by: "{{ postgresql_gpgkey }}"
 
-- name: Install PostgreSQL
+- name: Update cache
   ansible.builtin.apt:
-    name:
-      - "postgresql-{{postgresql_version}}"
-      - "postgresql-client-{{postgresql_version}}"
-      - "postgresql-contrib-{{postgresql_version}}"
+    update_cache: yes
+
+- name: Install PostgreSQL packages
+  ansible.builtin.apt:
+    name: " {{ postgresql_packages }}"
     state: present
     update_cache: yes
     cache_valid_time: 3600
