@@ -7,9 +7,25 @@
     state: directory
     mode: 0700
 
+- name: Ensure PostgreSQL conf directory exists.
+  ansible.builtin.file:
+    path: "{{ postgresql_conf_files }}"
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
+    state: directory
+    mode: 0700
+
+- name: Ensure PostgreSQL bin directory exists
+  ansible.builtin.file:
+    path: "{{ postgresql_bin_dir }}"
+    owner: "{{ postgresql_user }}"
+    group: "{{ postgresql_group }}"
+    state: directory
+    mode: 0700
+
 - name: "Init postgresql database cluster"
   ansible.builtin.command:
-    cmd: "{{ postgresql_bin_location }}/initdb -D {{ postgresql_data_dir }}"
+    cmd: "{{ postgresql_bin_dir }}/initdb -D {{ postgresql_data_dir }}"
   become: yes
   become_user: "{{ postgresql_user }}"
   register: postgresql_cluster
