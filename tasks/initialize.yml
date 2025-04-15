@@ -26,7 +26,7 @@
 - name: Set listen_addresses to
   community.postgresql.postgresql_set:
     name: listen_addresses
-    value: "{{ postgresql_connection_ip }}"
+    value: "{{ postgresql_listen_addresses }}"
   become: true
   become_user: "{{ postgresql_user }}"
   notify: Restart PostgreSQL
