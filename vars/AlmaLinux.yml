@@ -2,6 +2,6 @@ postgresql_version: 17
 postgresql_yum_repository_url: "https://yum.postgresql.org/{{ postgresql_version }}/{{ ansible_os_family | lower }}/rhel-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}"
 postgresql_yum_repository_gpgkey: "https://download.postgresql.org/pub/repos/yum/keys/PGDG-RPM-GPG-KEY-RHEL"
 
-postgresql_conf_files: "/var/lib/pgsql/data"
+postgresql_confs_dir: "/var/lib/pgsql/data"
 postgresql_data_dir: "/var/lib/pgsql/data"
-postgresql_bin_location: "/usr/bin"
+postgresql_bin_dir: "/usr/bin"
