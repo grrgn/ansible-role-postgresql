@@ -11,7 +11,7 @@ postgresql_yum_repository_gpgkey: "https://download.postgresql.org/pub/repos/yum
 postgresql_user: postgres
 postgresql_group: postgres
 postgresql_db_user: student
-postgresql_user_password: password
+postgresql_db_user_password: password
 postgresql_connection_ip: 192.168.1.102
-postgresql_database:
+postgresql_database: postgres
 postgresql_port:
