@@ -1,0 +1,32 @@
+---
+- name: Destroy
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Destroy molecule Docker containers
+      community.docker.docker_container:
+        name: "{{ item.name }}"
+        state: absent
+        force_kill: true
+      register: server
+      with_items: "{{ molecule_yml.platforms }}"
+      ignore_errors: true
+
+    # Developer must implement.
+
+    # Mandatory configuration for Molecule to function.
+
+    - name: Reset instance config
+      ansible.builtin.set_fact:
+        instance_conf: {}
+
+    - name: Dump instance config
+      ansible.builtin.copy:
+        content: |
+          # Molecule managed
+
+          {{ instance_conf | to_json | from_json | to_yaml }}
+        dest: "{{ molecule_instance_config }}"
+        mode: "0600"
+      when: server.changed | default(false) | bool  # noqa no-handler

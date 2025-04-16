@@ -1,0 +1,19 @@
+---
+- name: Create
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Create Molecule Docker containers
+      community.docker.docker_container:
+        name: "{{ item.name }}"
+        image: "{{ item.image }}"
+        command: "{{ item.command | default(omit) }}"
+        volumes: "{{ item.volumes | default(omit) }}"
+        cgroupns_mode: "{{ item.cgroupns_mode | default(omit) }}"
+        privileged: "{{ item.privileged | default(omit) }}"
+        state: started
+      register: server
+      with_items: "{{ molecule_yml.platforms }}"
+
+
