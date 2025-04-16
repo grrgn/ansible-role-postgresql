@@ -1,10 +1,13 @@
 ---
 - name: Create PostgreSQL user
   community.postgresql.postgresql_user:
+    login_user: "{{ postgresql_user }}"
     name: "{{ postgresql_db_user }}"
     password: "{{ postgresql_db_user_password }}"
     role_attr_flags: LOGIN
     state: present
+  become: true
+  become_user: postgres
 
 - name: Grant user access to some db
   community.postgresql.postgresql_pg_hba:
@@ -13,5 +16,8 @@
     users: "{{ postgresql_db_user }}"
     databases: "{{ postgresql_database }}"
     method: md5
-    source: "{{ postgresql_connection_ip }}"
+    source: "{{ postgresql_source_addr }}"
     state: present
+  become: true
+  become_user: "{{ postgresql_user }}"
+  notify: Reload postgresql conf
