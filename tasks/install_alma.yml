@@ -11,10 +11,6 @@
     gpgkey: "{{ postgresql_yum_repository_gpgkey }}"
     enabled: true
 
-- name: Update cache
-  ansible.builtin.yum:
-    update_cache: true
-
 - name: Install PostgreSQL packages
   ansible.builtin.yum:
     name: "{{ postgresql_packages }}"
