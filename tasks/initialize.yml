@@ -40,7 +40,7 @@
   ansible.builtin.service:
     name: "{{ postgresql_service }}"
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Set listen_addresses to
   community.postgresql.postgresql_set:

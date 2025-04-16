@@ -9,15 +9,15 @@
     description: postgresql yum repo
     baseurl: "{{ postgresql_yum_repository_url }}"
     gpgkey: "{{ postgresql_yum_repository_gpgkey }}"
-    enabled: yes
+    enabled: true
 
 - name: Update cache
   ansible.builtin.yum:
-    update_cache: yes
+    update_cache: true
 
 - name: Install PostgreSQL packages
   ansible.builtin.yum:
     name: "{{ postgresql_packages }}"
     state: present
-    update_cache: yes
+    update_cache: true
 
