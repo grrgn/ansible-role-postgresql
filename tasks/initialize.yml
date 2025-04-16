@@ -9,7 +9,7 @@
 
 - name: Ensure PostgreSQL conf directory exists.
   ansible.builtin.file:
-    path: "{{ postgresql_conf_files }}"
+    path: "{{ postgresql_confs_dir }}"
     owner: "{{ postgresql_user }}"
     group: "{{ postgresql_group }}"
     state: directory
@@ -23,31 +23,29 @@
     state: directory
     mode: 0700
 
-- name: "Init postgresql database cluster"
-  ansible.builtin.command:
-    cmd: "{{ postgresql_bin_dir }}/initdb -D {{ postgresql_data_dir }}"
-  become: yes
+- name: Check if db exists
+  ansible.builtin.find:
+    paths: "{{ postgresql_data_dir }}"
+    file_type: any
+  register: postgresql_data
+
+
+- name: Init db
+  ansible.builtin.command: "{{ postgresql_bin_dir }}/initdb -D {{ postgresql_data_dir }}"
+  become: true
   become_user: "{{ postgresql_user }}"
-  register: postgresql_cluster
-
-- name: "Copy postgresql.conf"
-  ansible.builtin.template:
-    src: "postgresql.conf.j2"
-    dest: "{{ postgresql_conf_files }}/postgresql.conf"
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
-  notify: "Restart PostgreSQL"
-
-- name: "Copy pg_hba.conf"
-  ansible.builtin.template:
-    src: "pg_hba.conf.j2"
-    dest: "{{ postgresql_conf_files }}/pg_hba.conf"
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
-  notify: "Restart PostgreSQL"
+  when: postgresql_data.matched == 0
 
 - name: "Ensure PostgreSQL is running"
   ansible.builtin.service:
-    name: postgresql
+    name: "{{ postgresql_service }}"
     state: started
     enabled: yes
+
+- name: Set listen_addresses to
+  community.postgresql.postgresql_set:
+    name: listen_addresses
+    value: "{{ postgresql_listen_addresses }}"
+  become: true
+  become_user: "{{ postgresql_user }}"
+  notify: Restart PostgreSQL
