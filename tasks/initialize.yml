@@ -29,18 +29,24 @@
     file_type: any
   register: postgresql_data
 
-
 - name: Init db
   ansible.builtin.command: "{{ postgresql_bin_dir }}/initdb -D {{ postgresql_data_dir }}"
   become: true
   become_user: "{{ postgresql_user }}"
   when: postgresql_data.matched == 0
 
-- name: "Ensure PostgreSQL is running"
+- name: Ensure PostgreSQL is running
   ansible.builtin.service:
     name: "{{ postgresql_service }}"
     state: started
     enabled: true
+
+- name: Collect settings info
+  become: true
+  become_user: postgres
+  community.postgresql.postgresql_info:
+    filter: "settings"
+  register: postgresql_settings
 
 - name: Set listen_addresses to
   community.postgresql.postgresql_set:
@@ -49,3 +55,4 @@
   become: true
   become_user: "{{ postgresql_user }}"
   notify: Restart PostgreSQL
+  when: postgresql_settings.settings.listen_addresses.setting != postgresql_listen_addresses.replace(',', ', ')
