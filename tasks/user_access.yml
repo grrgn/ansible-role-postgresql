@@ -17,6 +17,7 @@
     databases: "{{ pg_database }}"
     method: md5
     source: "{{ pg_source_addr }}"
+    create: true
     state: present
   become: true
   become_user: "{{ pg_user }}"
