@@ -1,0 +1,41 @@
+FROM debian:12
+
+ARG SSH_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOPpMPJSOzk/BAJgVcMr5Kpp0L5/dtzUw4hOmMF4fLaG grrg-lt key"
+
+RUN apt-get update ; \
+    apt-get install -y systemd systemd-sysv; \
+    apt-get clean ; \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ; \
+    rm -rf /lib/systemd/system/multi-user.target.wants/* ; \
+    rm -rf /etc/systemd/system/*.wants/* ; \
+    rm -rf /lib/systemd/system/local-fs.target.wants/* ; \
+    rm -rf /lib/systemd/system/sockets.target.wants/*udev* ; \
+    rm -rf /lib/systemd/system/sockets.target.wants/*initctl* ; \
+    rm -rf /lib/systemd/system/sysinit.target.wants/systemd-tmpfiles-setup* ; \
+    rm -rf /lib/systemd/system/systemd-update-utmp*
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        gnupg \
+        lsb-release \
+        sudo \
+        openssh-server \
+        net-tools \
+        iproute2 \
+        which \
+        hostname \
+        python3 \
+        python3-pip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    useradd -m ansible && \
+    echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    mkdir -p /home/ansible/.ssh && \
+    touch /home/ansible/.ssh/authorized_keys && \
+    echo "${SSH_KEY}" > /home/ansible/.ssh/authorized_keys && \
+    chown -R ansible:ansible /home/ansible/.ssh && \
+    chmod 600 /home/ansible/.ssh/authorized_keys && \
+    chmod 700 /home/ansible/.ssh
+
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
+CMD ["/usr/lib/systemd/systemd"]

@@ -1,0 +1,42 @@
+FROM almalinux:9
+
+ARG SSH_KEY="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOPpMPJSOzk/BAJgVcMr5Kpp0L5/dtzUw4hOmMF4fLaG grrg-lt key"
+
+RUN dnf update && \
+    dnf -y install systemd && \
+    dnf clean all && \
+    (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfile-setup.service ] || rm -f $i; done); \
+    rm -f /lib/systemd/system/multi-user.target.wants/*;\
+    rm -f /etc/systemd/system/*.wants/*;\
+    rm -f /lib/systemd/system/local-fs.target.wants/*; \
+    rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+    rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+    rm -f /lib/systemd/system/basic.target.wants/*;\
+    rm -f /lib/systemd/system/anaconda.target.wants/*;
+
+RUN dnf makecache && \
+    dnf -y install rpm dnf-plugins-core && \
+    dnf -y update && \
+    dnf -y install \
+      openssh-server \
+      iproute \
+      epel-release \
+      initscripts \
+      sudo \
+      which \
+      hostname \
+      libyaml \
+      python3 \
+      python3-pip && \
+    dnf clean all && \
+    useradd -m ansible && \
+    echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
+    mkdir -p /home/ansible/.ssh && \
+    touch /home/ansible/.ssh/authorized_keys && \
+    echo "${SSH_KEY}" > /home/ansible/.ssh/authorized_keys && \
+    chown -R ansible:ansible /home/ansible/.ssh && \
+    chmod 600 /home/ansible/.ssh/authorized_keys && \
+    chmod 700 /home/ansible/.ssh
+
+VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
+CMD ["/usr/lib/systemd/systemd"]
