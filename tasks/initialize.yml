@@ -55,4 +55,4 @@
   become: true
   become_user: "{{ pg_user }}"
   notify: Restart PostgreSQL
-  when: postgresql_settings.settings.listen_addresses.setting != postgresql_listen_addresses.replace(',', ', ')
+  when: pg_settings.settings.listen_addresses.setting != pg_listen_addresses.replace(',', ', ')
