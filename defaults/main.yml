@@ -10,7 +10,7 @@ pg_user: postgres
 pg_group: postgres
 pg_db_user: student
 pg_db_user_password: password
-pg_source_addr: "{{ ansible_all_ipv4_addresses[0] }}"
+pg_source_addr: "{{ ansible_all_ipv4_addresses[0] }}/32"
 pg_listen_addresses: "localhost,{{ ansible_all_ipv4_addresses[0] }}"
 pg_database: postgres
 pg_port: 5432
