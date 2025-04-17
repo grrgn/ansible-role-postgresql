@@ -10,8 +10,8 @@ postgresql_user: postgres
 postgresql_group: postgres
 postgresql_db_user: student
 postgresql_db_user_password: password
-postgresql_source_addr: 192.168.1.102/32
-postgresql_listen_addresses: "localhost"
+postgresql_source_addr: "{{ ansible_all_ipv4_addresses[0] }}"
+postgresql_listen_addresses: "localhost,{{ ansible_all_ipv4_addresses[0] }}"
 postgresql_database: postgres
 postgresql_port: 5432
 postgresql_version: 17
