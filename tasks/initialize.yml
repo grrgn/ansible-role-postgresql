@@ -1,43 +1,43 @@
 ---
 - name: Ensure PostgreSQL data directory exists.
   ansible.builtin.file:
-    path: "{{ postgresql_data_dir }}"
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
+    path: "{{ pg_data_dir }}"
+    owner: "{{ pg_user }}"
+    group: "{{ pg_group }}"
     state: directory
     mode: 0700
 
 - name: Ensure PostgreSQL conf directory exists.
   ansible.builtin.file:
-    path: "{{ postgresql_confs_dir }}"
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
+    path: "{{ pg_confs_dir }}"
+    owner: "{{ pg_user }}"
+    group: "{{ pg_group }}"
     state: directory
     mode: 0700
 
 - name: Ensure PostgreSQL bin directory exists
   ansible.builtin.file:
-    path: "{{ postgresql_bin_dir }}"
-    owner: "{{ postgresql_user }}"
-    group: "{{ postgresql_group }}"
+    path: "{{ pg_bin_dir }}"
+    owner: "{{ pg_user }}"
+    group: "{{ pg_group }}"
     state: directory
     mode: 0700
 
 - name: Check if db exists
   ansible.builtin.find:
-    paths: "{{ postgresql_data_dir }}"
+    paths: "{{ pg_data_dir }}"
     file_type: any
-  register: postgresql_data
+  register: pg_data
 
 - name: Init db
-  ansible.builtin.command: "{{ postgresql_bin_dir }}/initdb -D {{ postgresql_data_dir }}"
+  ansible.builtin.command: "{{ pg_bin_dir }}/initdb -D {{ pg_data_dir }}"
   become: true
-  become_user: "{{ postgresql_user }}"
-  when: postgresql_data.matched == 0
+  become_user: "{{ pg_user }}"
+  when: pg_data.matched == 0
 
 - name: Ensure PostgreSQL is running
   ansible.builtin.service:
-    name: "{{ postgresql_service }}"
+    name: "{{ pg_service }}"
     state: started
     enabled: true
 
@@ -46,13 +46,13 @@
   become_user: postgres
   community.postgresql.postgresql_info:
     filter: "settings"
-  register: postgresql_settings
+  register: pg_settings
 
 - name: Set listen_addresses to
   community.postgresql.postgresql_set:
     name: listen_addresses
-    value: "{{ postgresql_listen_addresses }}"
+    value: "{{ pg_listen_addresses }}"
   become: true
-  become_user: "{{ postgresql_user }}"
+  become_user: "{{ pg_user }}"
   notify: Restart PostgreSQL
   when: postgresql_settings.settings.listen_addresses.setting != postgresql_listen_addresses.replace(',', ', ')

@@ -3,11 +3,11 @@
   hosts: all
   become: true
   vars:
-    postgresql_db_user: "test_user"
-    postgresql_db_user_password: "test_password"
-    postgresql_source_addr: "172.17.0.0/16"
-    postgresql_database: "test_db"
-    postgresql_version: 17
+    pg_db_user: "test_user"
+    pg_db_user_password: "test_password"
+    pg_source_addr: "172.17.0.0/16"
+    pg_database: "test_db"
+    pg_version: 17
 
   roles:
     - role: ansible-role-postgresql
@@ -15,14 +15,14 @@
   tasks:
     - name: Verify PostgreSQL is running
       ansible.builtin.service:
-        name: "{{ postgresql_service }}"
+        name: "{{ pg_service }}"
         state: started
-      register: postgresql_status
+      register: pg_status
 
     - name: Check PostgreSQL connection
       community.postgresql.postgresql_ping:
-        login_user: "{{ postgresql_db_user }}"
-        login_password: "{{ postgresql_db_user_password }}"
+        login_user: "{{ pg_db_user }}"
+        login_password: "{{ pg_db_user_password }}"
         login_host: localhost
-        db: "{{ postgresql_database }}"
-      register: postgresql_ping
+        db: "{{ pg_database }}"
+      register: pg_ping

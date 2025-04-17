@@ -7,13 +7,13 @@
     name: postgresql
     state: present
     description: postgresql yum repo
-    baseurl: "{{ postgresql_yum_repository_url }}"
-    gpgkey: "{{ postgresql_yum_repository_gpgkey }}"
+    baseurl: "{{ pg_yum_repository_url }}"
+    gpgkey: "{{ pg_yum_repository_gpgkey }}"
     enabled: true
 
 - name: Install PostgreSQL packages
   ansible.builtin.yum:
-    name: "{{ postgresql_packages }}"
+    name: "{{ pg_packages }}"
     state: present
     update_cache: true
 

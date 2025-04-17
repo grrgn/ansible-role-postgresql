@@ -1,18 +1,18 @@
 ---
-postgresql_apt_url: "https://apt.postgresql.org/pub/repos/apt"
-postgresql_version_type: "main"
-postgresql_gpgkey: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+pg_apt_url: "https://apt.postgresql.org/pub/repos/apt"
+pg_version_type: "main"
+pg_gpgkey: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
 
-postgresql_python_packages:
+pg_python_packages:
   - "python3-psycopg2"
   - "python3-debian"
 
-postgresql_packages:
-  - "postgresql-{{ postgresql_version}}"
-  - "postgresql-client-{{ postgresql_version}}"
-  - "postgresql-contrib-{{ postgresql_version}}"
+pg_packages:
+  - "postgresql-{{ pg_version}}"
+  - "postgresql-client-{{ pg_version}}"
+  - "postgresql-contrib-{{ pg_version}}"
 
-postgresql_confs_dir: "/etc/postgresql/{{ postgresql_version }}/main"
-postgresql_data_dir: "/var/lib/postgresql/{{ postgresql_version }}/main"
-postgresql_bin_dir: "/usr/lib/postgresql/{{ postgresql_version }}/bin"
-postgresql_service: "postgresql"
+pg_confs_dir: "/etc/postgresql/{{ pg_version }}/main"
+pg_data_dir: "/var/lib/postgresql/{{ pg_version }}/main"
+pg_bin_dir: "/usr/lib/postgresql/{{ pg_version }}/bin"
+pg_service: "postgresql"

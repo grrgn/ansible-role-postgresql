@@ -1,12 +1,12 @@
 ---
 - name: Restart PostgreSQL
   ansible.builtin.service:
-    name: "{{ postgresql_service }}"
+    name: "{{ pg_service }}"
     state: restarted
 
 - name: Reload PostgreSQL
   ansible.builtin.service:
-    name: "{{ postgresql_service }}"
+    name: "{{ pg_service }}"
     state: reloaded
 
 - name: Reload postgresql conf
@@ -14,4 +14,4 @@
     db: postgres
     query: SELECT pg_reload_conf()
   become: true
-  become_user: "{{ postgresql_user }}"
+  become_user: "{{ pg_user }}"
