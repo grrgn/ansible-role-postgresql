@@ -1,11 +1,11 @@
 ---
 - name: Install PostgreSQL on Debian
   ansible.builtin.include_tasks: install_debian.yml
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
-- name: Install PostgreSQL on AlmaLinux
-  ansible.builtin.include_tasks: install_alma.yml
-  when: ansible_distribution == 'AlmaLinux'
+- name: Install PostgreSQL on RHEL
+  ansible.builtin.include_tasks: install_rhel.yml
+  when: ansible_os_family == 'RedHat'
 
 - name: Initialize PostgreSQL
   ansible.builtin.include_tasks: initialize.yml

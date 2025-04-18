@@ -1,10 +1,10 @@
 # Ansible Role: PostgreSQL
 
-Ansible role устанавливает и конфигурирует PostgreSQL server на Debian и AlmaLinux
+Ansible role устанавливает и конфигурирует PostgreSQL server на Debian и RHEL
 ## Требования
 
 - Ansible 2.15+
-- Debian или AlmaLinux
+- Debian или RHEL
 
 ## Переменные роли
 
@@ -12,25 +12,25 @@ Ansible role устанавливает и конфигурирует PostgreSQL
 
 ```yaml
 # PostgreSQL version to install
-postgresql_version: "13"
+pg_version: "13"
 
 # PostgreSQL data directory
-postgresql_data_dir: "/var/lib/postgresql/{{ postgresql_version }}/main"
+pg_data_dir: "/var/lib/postgresql/{{ pg_version }}/main"
 
 # PostgreSQL configuration directory
-postgresql_config_dir: "/etc/postgresql/{{ postgresql_version }}/main"
+pg_config_dir: "/etc/postgresql/{{ pg_version }}/main"
 
 # PostgreSQL port
-postgresql_port: 5432
+pg_port: 5432
 
 # PostgreSQL superuser password
-postgresql_superuser_password: ""
+pg_superuser_password: ""
 
 # List of databases to create
-postgresql_databases: []
+pg_databases: []
 
 # List of users to create
-postgresql_users: []
+pg_users: []
 ```
 
 ## Примерный playbook
@@ -40,12 +40,12 @@ postgresql_users: []
   roles:
     - role: ansible-role-postgresql
       vars:
-        postgresql_version: "13"
-        postgresql_superuser_password: "secure_password"
-        postgresql_databases:
+        pg_version: "13"
+        pg_superuser_password: "secure_password"
+        pg_databases:
           - name: myapp
             owner: myapp_user
-        postgresql_users:
+        pg_users:
           - name: myapp_user
             password: "user_password"
             databases: ["myapp"]
@@ -53,7 +53,7 @@ postgresql_users: []
 
 ## Особенности
 
-- Поддерживает операционные системы Debian и AlmaLinux
+- Поддерживает операционные системы Debian и RHEL
 - Устанавливает сервер PostgreSQL
 - Создаёт указанные базы данных
 - Создаёт и настраивает пользователей баз данных

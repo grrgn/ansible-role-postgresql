@@ -13,7 +13,7 @@ galaxy_info:
     - name: Debian
       versions:
         - bookworm
-    - name: Almalinux
+    - name: RHEL
       versions:
         - "9"
 
@@ -24,7 +24,7 @@ galaxy_info:
     - rdbms
     - sql
     - debian
-    - almalinux
+    - RHEL
 
   dependencies:
     community.postgresql: ">=3.0.0"
