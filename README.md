@@ -1,38 +1,68 @@
-Role Name
-=========
+# Ansible Role: PostgreSQL
 
-A brief description of the role goes here.
+Ansible role устанавливает и конфигурирует PostgreSQL server на Debian и AlmaLinux
+## Требования
 
-Requirements
-------------
+- Ansible 2.15+
+- Debian или AlmaLinux
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Переменные роли
 
-Role Variables
---------------
+Следующие переменные содержатся в `defaults/main.yml`:
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```yaml
+# PostgreSQL version to install
+postgresql_version: "13"
 
-Dependencies
-------------
+# PostgreSQL data directory
+postgresql_data_dir: "/var/lib/postgresql/{{ postgresql_version }}/main"
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+# PostgreSQL configuration directory
+postgresql_config_dir: "/etc/postgresql/{{ postgresql_version }}/main"
 
-Example Playbook
-----------------
+# PostgreSQL port
+postgresql_port: 5432
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+# PostgreSQL superuser password
+postgresql_superuser_password: ""
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+# List of databases to create
+postgresql_databases: []
 
-License
--------
+# List of users to create
+postgresql_users: []
+```
 
-BSD
+## Примерный playbook
 
-Author Information
-------------------
+```yaml
+- hosts: database_servers
+  roles:
+    - role: ansible-role-postgresql
+      vars:
+        postgresql_version: "13"
+        postgresql_superuser_password: "secure_password"
+        postgresql_databases:
+          - name: myapp
+            owner: myapp_user
+        postgresql_users:
+          - name: myapp_user
+            password: "user_password"
+            databases: ["myapp"]
+```
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+## Особенности
+
+- Поддерживает операционные системы Debian и AlmaLinux
+- Устанавливает сервер PostgreSQL
+- Создаёт указанные базы данных
+- Создаёт и настраивает пользователей баз данных
+- Устанавливает соответствующие права доступа
+
+## License
+
+MIT
+
+## Author Information
+
+This role was created by grrg.
