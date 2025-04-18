@@ -15,4 +15,4 @@ pg_packages:
 pg_confs_dir: "/etc/postgresql/{{ pg_version }}/main"
 pg_data_dir: "/var/lib/postgresql/{{ pg_version }}/main"
 pg_bin_dir: "/usr/lib/postgresql/{{ pg_version }}/bin"
-pg_service: "postgresql"
+pg_service: "postgresql@{{ pg_version }}-main"
