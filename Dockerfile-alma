@@ -28,8 +28,8 @@ RUN dnf makecache && \
       libyaml \
       python3 \
       python3-pip && \
-    dnf clean all && \
-    useradd -m ansible && \
+    dnf clean all
+RUN adduser -m -s /bin/bash -u 5000 -U ansible && \
     echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers && \
     mkdir -p /home/ansible/.ssh && \
     touch /home/ansible/.ssh/authorized_keys && \
